@@ -1,0 +1,156 @@
+syntax = "proto3";
+package pb_order;
+option go_package = "./pb_order";
+
+import "google/protobuf/any.proto";
+import "common.proto";
+
+
+//// 公用参数
+//message ComOrdParam {
+//  string  RoleId = 1;
+//  int64   ParentId = 2;
+//  int64   SubId = 3;
+//  double  SurplusCoin = 4;
+//  double  Bet = 5;
+//  double  Score = 6;
+//  int64   Status = 7;
+//  int64   CreateTime = 8;
+//}
+
+message ComPager {
+  int64   PagePage = 1;
+  int64   PageRow = 2;
+  string  PageStat = 3;
+}
+
+message Req_GetHisotry {
+  string  Token = 1;         // 玩家token
+  string  OperatorToken = 2; // 运营商token
+  int32   GameCode = 3;
+  int64   StartTime = 4;
+  int64   EndTime = 5;
+  int64   PagePage = 6;
+  int64   PageRow = 7;
+}
+
+message GenerateResult {
+  int64 TradeOrderNo = 1;
+}
+
+message Empty {}
+
+message Req_OrderNo { string AuthToken = 1; }
+message Res_OrderNo { int64 OrderNo = 1; }
+
+message OrderHistoryItem {
+  string  RoleId = 1;
+  int64   ParentId = 2;
+  int64   SubId = 3;
+  double  SurplusCoin = 4;
+  double  BetLevel = 5;
+  double  Bet = 6;
+  double  Score = 7;
+  int64   Status = 8;
+  string  ReceiptId = 9;
+  int64   CreateTime = 10;
+  google.protobuf.Any Role = 11;
+}
+
+message Res_HistoryList {
+  repeated OrderHistoryItem HistoryItem = 1;
+  ComPager ComPager = 2;
+}
+
+message Req_RecommendRtp {
+  int32 GameId = 1;
+  string RoleId = 2;
+  string operatorToken = 3;
+}
+
+message Res_RecommendRtp {
+  int32 RTP = 1;
+}
+
+message Req_RecommendRiskConfig {
+  int32 GameId = 1;
+  string RoleId = 2;
+  string operatorToken = 3;
+  int32 UsingRTP = 4;
+}
+
+message Res_RecommendRiskConfig {
+  double Threshold = 1;
+  int32 ReSpinTimes = 2;
+}
+
+message Req_AddLogin {
+  string RoleId = 1;
+}
+
+message Res_AddLogin {
+}
+
+message Req_UpdateOrder {
+  int32 GameId = 1;
+  string RoleId = 2;
+  string OperatorToken = 3;
+  int64 ParentId = 4;
+  int64 SubId = 5;
+  double Bet = 6;
+  double Score = 7;
+  int64 Status = 8;
+  string CurrencyCode = 9;
+  int64 CurrencyMult = 10;
+  string MathVersion = 11;
+  double ExchangeRate = 12;
+  bool IsNewPlayer = 13;
+  bool IsActivity = 14;
+  bool RoundEnd = 15;
+  bool UseTag = 16;
+}
+
+message Res_UpdateOrder {}
+
+message Req_GetUserTag {
+  string RoleId = 1;
+}
+message Res_GetUserTag {
+  bool HasTag = 1;
+  double HitProbability120 = 2;
+  double HitProbability150 = 3;
+}
+
+message Req_GetUserBreakProtect {
+  string RoleId = 1;
+  double Balance = 2;
+  double MinBetLevel = 3;
+}
+
+message Res_GetUserBreakProtect {
+  bool BreakProtect = 1;
+  double HitProbability = 2;
+  int32 NotHitRTP = 3;
+  int32 HitRTP = 4;
+}
+
+message Req_UseBreakProtect {
+  string RoleId = 1;
+}
+
+message Res_UseBreakProtect {
+}
+
+service OrderSrv {
+  rpc GetHistory(Req_GetHisotry) returns(Res_HistoryList) {}
+  rpc GenerationOrderNo (Empty) returns(GenerateResult) {}
+  rpc ProduceOrderNo(Req_OrderNo) returns(Res_OrderNo) {}
+  rpc ConsumeOrderNo(Req_OrderNo) returns(Res_OrderNo) {}
+  rpc RecommendRtp(Req_RecommendRtp) returns(Res_RecommendRtp) {}
+  rpc RecommendRiskConfig(Req_RecommendRiskConfig) returns(Res_RecommendRiskConfig) {}
+  rpc AddLogin(Req_AddLogin) returns(Res_AddLogin) {}
+  rpc UpdateOrder(Req_UpdateOrder) returns(Res_UpdateOrder) {}
+  rpc GetUserTag(Req_GetUserTag) returns(Res_GetUserTag) {}
+  rpc GetUserBreakProtect(Req_GetUserBreakProtect) returns(Res_GetUserBreakProtect) {}
+  rpc UseBreakProtect(Req_UseBreakProtect) returns(Res_UseBreakProtect) {}
+}

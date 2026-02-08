@@ -10,7 +10,7 @@
 
 ## 描述符目录约定
 
-- 描述符放在 **gateway_sdk 的 core 包目录**下（即 SDK 代码所在目录），随 SDK 分发，接入方不用每边都生成一次。
+- 描述符放在**本仓库的 core 包目录**下（即 SDK 代码所在目录），随 SDK 分发，接入方不用每边都生成一次。
 - 文件名 = **服务全限定名**.pb，与完整方法名中的服务名一致。  
   例如方法 `/pb_playercenter.PlayerCenterSrv/SetWantedRole` 对应 `core/pb_playercenter.PlayerCenterSrv.pb`。
 - 在 SDK 仓库中生成并提交：`protoc --descriptor_set_out=./core/pb_xxx.MyService.pb --include_imports -I. your.proto`
@@ -23,7 +23,7 @@ package main
 import (
 	"net/http"
 
-	_ "gateway_sdk/sdk" // 引包即注册，网关挂在 http.DefaultServeMux，路径 /grpc-gateway
+	_ "github.com/papanobaby/gateway/sdk" // 引包即注册，网关挂在 http.DefaultServeMux，路径 /grpc-gateway
 )
 
 func main() {

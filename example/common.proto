@@ -1,0 +1,4 @@
+syntax = "proto3";
+package common;
+
+// 占位，供 order_srv.proto 的 import 解析；若有实际定义请替换此文件。
